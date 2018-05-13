@@ -48,5 +48,27 @@ public class ParticipantRestController {
 		//zwrocic
 		
 }
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	 public ResponseEntity<?> deleteParticipant(@PathVariable("id") String login){
+		 Participant participant = participantService.findByLogin(login);
+		 if (participant == null) {
+			 return new ResponseEntity(HttpStatus.NOT_FOUND);
+		 }
+		  participantService.deleteParticipant(participant);
+		  return new ResponseEntity<Participant>(participant, HttpStatus.OK);
+			
+}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	 public ResponseEntity<?> updateParticipant(@PathVariable("id") String login, @RequestBody Participant updatedParticipant ){
+		 Participant participant = participantService.findByLogin(login);
+		 if (participant == null) {
+			 return new ResponseEntity(HttpStatus.NOT_FOUND);
+		 }
+		 participant.setPassword(updatedParticipant.getPassword());
+		  participantService.updateParticipant(participant);
+		  return new ResponseEntity<Participant>(participant, HttpStatus.OK);
+}
 }
 
