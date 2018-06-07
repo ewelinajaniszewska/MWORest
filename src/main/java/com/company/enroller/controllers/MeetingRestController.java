@@ -39,13 +39,31 @@ public class MeetingRestController {
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	 public ResponseEntity<?> addMeeting(@RequestBody Meeting meeting){
-	
-		//if (meetingService.findByID(meeting.getId())!=null) {
-			//return new ResponseEntity(HttpStatus.CONFLICT);
-		//} poprawic find by name
 		meetingService.addMeeting(meeting);
 		return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	 public ResponseEntity<?> deleteMeeting(@PathVariable("id") Long id){
+		 Meeting meeting = meetingService.findByID(id);
+		 if (meeting == null) {
+			 return new ResponseEntity(HttpStatus.NOT_FOUND);
+		 }
+		  meetingService.deleteMeeting(meeting);
+		  return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
+	}
+	
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	 public ResponseEntity<?> updateMeeting(@PathVariable("id") Long id, @RequestBody Meeting updateMeeting){
+		Meeting meeting = meetingService.findByID(id);
+		 if (meeting == null) {
+			 return new ResponseEntity(HttpStatus.NOT_FOUND);
+		 }
+		 meeting.setDescription(updateMeeting.getDescription());
+		 meeting.setDate(updateMeeting.getDate());
+		  meetingService.updateMeeting(meeting);
+		  return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
+}
 }
 
